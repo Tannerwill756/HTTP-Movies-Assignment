@@ -21,14 +21,17 @@ const UpdateMovie = (props) => {
         setItem(res.data);
       })
       .catch((err) => console.log(err));
-  }, [id]);
+  }, []);
 
   const changeHandler = (e) => {
     e.persist();
-
+    let value = e.target.value;
+    if (e.target.name === "stars") {
+      value = e.target.value.split(",");
+    }
     setItem({
       ...item,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
 
@@ -37,7 +40,6 @@ const UpdateMovie = (props) => {
     axios
       .put(`http://localhost:5000/api/movies/${id}`, item)
       .then((res) => {
-        console.log(res.data);
         props.setMovieList([...props.movieList, res.data]);
         push("/");
       })
